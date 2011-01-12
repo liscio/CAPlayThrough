@@ -287,21 +287,27 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_OPTIMIZATION_LEVEL = 0;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Development;
 		};
 		F70E30250BB2147A00C0C9FB /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Deployment;
 		};
 		F70E30260BB2147A00C0C9FB /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 			};
 			name = Default;
 		};

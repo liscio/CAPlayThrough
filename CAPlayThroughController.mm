@@ -53,12 +53,20 @@ static void	BuildDeviceMenu(AudioDeviceList *devlist, NSPopUpButton *menu, Audio
 - (void)awakeFromNib
 {
 	UInt32 propsize=0;
-		
+    AudioObjectPropertyAddress aopa;
+    		
 	propsize = sizeof(AudioDeviceID);
-	verify_noerr (AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice, &propsize, &inputDevice));
+
+    aopa.mSelector = kAudioHardwarePropertyDefaultInputDevice;
+    aopa.mScope = kAudioObjectPropertyScopeGlobal;
+    aopa.mElement = kAudioObjectPropertyElementMaster;
+    verify_noerr(AudioObjectGetPropertyData(kAudioObjectSystemObject, &aopa, 0, NULL, &propsize, &inputDevice));
 
 	propsize = sizeof(AudioDeviceID);
-	verify_noerr (AudioHardwareGetProperty(kAudioHardwarePropertyDefaultOutputDevice, &propsize, &outputDevice));
+    aopa.mSelector = kAudioHardwarePropertyDefaultOutputDevice;
+    aopa.mScope = kAudioObjectPropertyScopeGlobal;
+    aopa.mElement = kAudioObjectPropertyElementMaster;
+    verify_noerr(AudioObjectGetPropertyData(kAudioObjectSystemObject, &aopa, 0, NULL, &propsize, &outputDevice));
 	
 	BuildDeviceMenu(mInputDeviceList, mInputDevices, inputDevice);
 	BuildDeviceMenu(mOutputDeviceList, mOutputDevices, outputDevice);

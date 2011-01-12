@@ -85,11 +85,11 @@ private:
 	
 	void ResetPlayThrough();
 
-	static OSStatus StreamListener(	AudioStreamID           inStream,
-								UInt32                  inChannel,
-								AudioDevicePropertyID   inPropertyID,
-								void*                   inClientData);
-										
+	static OSStatus StreamListener( 
+        AudioObjectID inObjectID,
+        UInt32 inNumberAddresses,
+        const AudioObjectPropertyAddress inAddresses[],
+        void* inClientData );
 private:
 	CAPlayThrough *mPlayThrough;
 };

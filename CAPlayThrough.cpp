@@ -250,9 +250,12 @@ OSStatus CAPlayThrough::SetOutputDeviceAsCurrent(AudioDeviceID out)
 	
 	if(out == kAudioDeviceUnknown) //Retrieve the default output device
 	{
-		err = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultOutputDevice,
-									   &size,  
-									   &out);
+        AudioObjectPropertyAddress aopa;
+        aopa.mSelector = kAudioHardwarePropertyDefaultOutputDevice;
+        aopa.mScope = kAudioObjectPropertyScopeGlobal;
+        aopa.mElement = kAudioObjectPropertyElementMaster;
+        
+        err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &aopa, 0, NULL, &size, &out);
 	}
 	mOutputDevice.Init(out, false);
 	checkErr(err);
@@ -275,9 +278,12 @@ OSStatus CAPlayThrough::SetInputDeviceAsCurrent(AudioDeviceID in)
 	
 	if(in == kAudioDeviceUnknown) //get the default input device if device is unknown
 	{  
-		err = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice,
-									   &size,  
-									   &in);
+        AudioObjectPropertyAddress aopa;
+        aopa.mSelector = kAudioHardwarePropertyDefaultInputDevice;
+        aopa.mScope = kAudioObjectPropertyScopeGlobal;
+        aopa.mElement = kAudioObjectPropertyElementMaster;
+        
+        err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &aopa, 0, NULL, &size, &in);    
 		checkErr(err);
 	}
 	
@@ -544,7 +550,11 @@ OSStatus CAPlayThrough::SetupBuffers()
 	
 	// We must get the sample rate of the input device and set it to the stream format of AUHAL
 	propertySize = sizeof(Float64);
-	AudioDeviceGetProperty(mInputDevice.mID, 0, 1, kAudioDevicePropertyNominalSampleRate, &propertySize, &rate);
+    AudioObjectPropertyAddress aopa;
+    aopa.mSelector = kAudioDevicePropertyNominalSampleRate;
+    aopa.mScope = kAudioDevicePropertyScopeInput;
+    aopa.mElement = kAudioObjectPropertyElementMaster;
+    AudioObjectGetPropertyData(mInputDevice.mID, &aopa, 0, NULL, &propertySize, &rate);
 	asbd.mSampleRate =rate;
 	propertySize = sizeof(asbd);
 	
@@ -556,7 +566,10 @@ OSStatus CAPlayThrough::SetupBuffers()
 	
 	//Set the correct sample rate for the output device, but keep the channel count the same
 	propertySize = sizeof(Float64);
-	AudioDeviceGetProperty(mOutputDevice.mID, 0, 0, kAudioDevicePropertyNominalSampleRate, &propertySize, &rate);
+    aopa.mSelector = kAudioDevicePropertyNominalSampleRate;
+    aopa.mScope = kAudioDevicePropertyScopeOutput;
+    aopa.mElement = kAudioObjectPropertyElementMaster;
+    AudioObjectGetPropertyData(mOutputDevice.mID, &aopa, 0, NULL, &propertySize, &rate);
 	asbd.mSampleRate =rate;
 	propertySize = sizeof(asbd);
 	//Set the new audio stream formats for the rest of the AUs...
@@ -731,10 +744,11 @@ OSStatus CAPlayThrough::OutputProc(void *inRefCon,
 
 #pragma mark -- Listeners --
 
-OSStatus CAPlayThroughHost::StreamListener( AudioStreamID         inStream,
-											UInt32                  inChannel,
-											AudioDevicePropertyID   inPropertyID,
-											void*                   inClientData)
+OSStatus CAPlayThroughHost::StreamListener( 
+    AudioObjectID inObjectID,
+    UInt32 inNumberAddresses,
+    const AudioObjectPropertyAddress inAddresses[],
+    void* inClientData )
 {	
 	CAPlayThroughHost *This = (CAPlayThroughHost *)inClientData;
 	This->ResetPlayThrough();	
@@ -808,13 +822,17 @@ Boolean		CAPlayThroughHost::IsRunning()
 
 void CAPlayThroughHost::AddDeviceListeners(AudioDeviceID input)
 {
-		// StreamListener is called whenever the sample rate changes (as well as other format characteristics of the device)
+    // StreamListener is called whenever the sample rate changes (as well as other format characteristics of the device)
 	UInt32 propSize;
-	OSStatus err = AudioDeviceGetPropertyInfo(input, 0, true, kAudioDevicePropertyStreams, &propSize, NULL);
+    AudioObjectPropertyAddress aopa;
+    aopa.mSelector = kAudioDevicePropertyStreams;
+    aopa.mScope = kAudioDevicePropertyScopeInput;
+    aopa.mElement = kAudioObjectPropertyElementMaster;
+    OSStatus err = AudioObjectGetPropertyDataSize(input, &aopa, 0, NULL, &propSize);
 	if(!err)
 	{
 		AudioStreamID *streams = (AudioStreamID*)malloc(propSize);	
-		err = AudioDeviceGetProperty(input, 0, true, kAudioDevicePropertyStreams, &propSize, streams);
+        err = AudioObjectGetPropertyData(input, &aopa, 0, NULL, &propSize, streams);
 		
 		if(!err);
 		{
@@ -823,9 +841,14 @@ void CAPlayThroughHost::AddDeviceListeners(AudioDeviceID input)
 			{
 				UInt32 isInput;
 				propSize = sizeof(UInt32);
-				err = AudioStreamGetProperty(streams[i], 0, kAudioStreamPropertyDirection, &propSize, &isInput);
-				if(!err && isInput);
-					err = AudioStreamAddPropertyListener(streams[i], 0, kAudioStreamPropertyPhysicalFormat, StreamListener, this);
+                aopa.mSelector = kAudioStreamPropertyDirection;
+                aopa.mScope = kAudioObjectPropertyScopeGlobal;
+                aopa.mElement = kAudioObjectPropertyElementMaster;
+                err = AudioObjectGetPropertyData(streams[i], &aopa, 0, NULL, &propSize, &isInput);
+				if( !err && isInput ) {
+                    aopa.mSelector = kAudioStreamPropertyPhysicalFormat;
+                    err = AudioObjectAddPropertyListener(streams[i], &aopa, StreamListener, this);
+                }
 			}
 		}
 	}
@@ -834,11 +857,15 @@ void CAPlayThroughHost::AddDeviceListeners(AudioDeviceID input)
 void CAPlayThroughHost::RemoveDeviceListeners(AudioDeviceID input)
 {
 	UInt32 propSize;
-	OSStatus err = AudioDeviceGetPropertyInfo(input, 0, true, kAudioDevicePropertyStreams, &propSize, NULL);
+    AudioObjectPropertyAddress aopa;
+    aopa.mSelector = kAudioDevicePropertyStreams;
+    aopa.mScope = kAudioDevicePropertyScopeInput;
+    aopa.mElement = kAudioObjectPropertyElementMaster;
+    OSStatus err = AudioObjectGetPropertyDataSize(input, &aopa, 0, NULL, &propSize);
 	if(!err)
 	{
 		AudioStreamID *streams = (AudioStreamID*)malloc(propSize);	
-		err = AudioDeviceGetProperty(input, 0, true, kAudioDevicePropertyStreams, &propSize, streams);
+        err = AudioObjectGetPropertyData(input, &aopa, 0, NULL, &propSize, streams);
 		if(!err)
 		{
 			UInt32 numStreams = propSize / sizeof(AudioStreamID);
@@ -846,9 +873,13 @@ void CAPlayThroughHost::RemoveDeviceListeners(AudioDeviceID input)
 			{
 				UInt32 isInput;
 				propSize = sizeof(UInt32);
-				err = AudioStreamGetProperty(streams[i], 0, kAudioStreamPropertyDirection, &propSize, &isInput);
-				if(!err && isInput)
-					err = AudioStreamRemovePropertyListener(streams[i], 0, kAudioStreamPropertyPhysicalFormat, StreamListener);
+                aopa.mSelector = kAudioStreamPropertyDirection;
+                aopa.mScope = kAudioObjectPropertyScopeGlobal;
+                aopa.mElement = kAudioObjectPropertyElementMaster;
+                err = AudioObjectGetPropertyData(streams[i], &aopa, 0, NULL, &propSize, &isInput);
+				if(!err && isInput) {
+                    err = AudioObjectRemovePropertyListener(streams[i], &aopa, StreamListener, this);
+                }
 			}
 		}
 	}

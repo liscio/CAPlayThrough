@@ -57,33 +57,30 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 314728819;
-			PBXWorkspaceStateSaveDate = 314728819;
+			PBXPerProjectTemplateStateSaveDate = 316544639;
+			PBXWorkspaceStateSaveDate = 316544639;
 		};
 		perUserProjectItems = {
-			8308167B12C2623A005546D0 /* PBXTextBookmark */ = 8308167B12C2623A005546D0 /* PBXTextBookmark */;
 			8317441B12C2603700322EE7 /* PBXTextBookmark */ = 8317441B12C2603700322EE7 /* PBXTextBookmark */;
 			835D9C7712C064F80015AF45 /* PBXTextBookmark */ = 835D9C7712C064F80015AF45 /* PBXTextBookmark */;
+			83BA0F7212DE4B60009429D9 /* PBXTextBookmark */ = 83BA0F7212DE4B60009429D9 /* PBXTextBookmark */;
+			83BA0F7312DE4B61009429D9 /* PBXTextBookmark */ = 83BA0F7312DE4B61009429D9 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 83898CF812BFF4FA00B8C6A4 /* Source Control */;
 		userBuildSettings = {
 		};
 	};
-	8308167B12C2623A005546D0 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 8308167C12C2623A005546D0 /* CARingBuffer.cpp */;
-		name = "CARingBuffer.cpp: 11";
-		rLen = 0;
-		rLoc = 589;
-		rType = 0;
-		vrLen = 0;
-		vrLoc = 0;
-	};
 	8308167C12C2623A005546D0 /* CARingBuffer.cpp */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
 		name = CARingBuffer.cpp;
 		path = /Users/chris/Working/MyPublicUtility/CARingBuffer.cpp;
 		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {926, 5070}}";
+			sepNavSelRange = "{589, 0}";
+			sepNavVisRange = "{0, 1267}";
+		};
 	};
 	8317441B12C2603700322EE7 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -100,7 +97,7 @@
 		fRef = 8B9E54CE0687B6EB00738FA5 /* CAPlayThrough.cpp */;
 		name = "CAPlayThrough.cpp: 687";
 		rLen = 0;
-		rLoc = 22800;
+		rLoc = 23554;
 		rType = 0;
 		vrLen = 0;
 		vrLoc = 0;
@@ -151,18 +148,65 @@
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
 	};
+	83BA0F7212DE4B60009429D9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 8308167C12C2623A005546D0 /* CARingBuffer.cpp */;
+		name = "CARingBuffer.cpp: 11";
+		rLen = 0;
+		rLoc = 589;
+		rType = 0;
+		vrLen = 1267;
+		vrLoc = 0;
+	};
+	83BA0F7312DE4B61009429D9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 83BA0F7412DE4B61009429D9 /* CARingBuffer.cpp */;
+		name = "CARingBuffer.cpp: 11";
+		rLen = 0;
+		rLoc = 589;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	83BA0F7412DE4B61009429D9 /* CARingBuffer.cpp */ = {
+		isa = PBXFileReference;
+		name = CARingBuffer.cpp;
+		path = /Users/chris/Working/MyPublicUtility/CARingBuffer.cpp;
+		sourceTree = "<absolute>";
+	};
+	8B9E54A00687B3BC00738FA5 /* AudioDeviceList.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {996, 1365}}";
+			sepNavSelRange = "{3399, 0}";
+			sepNavVisRange = "{0, 3646}";
+		};
+	};
+	8B9E54B20687B59800738FA5 /* CAPlayThroughController.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {996, 2520}}";
+			sepNavSelRange = "{3359, 0}";
+			sepNavVisRange = "{1186, 3111}";
+		};
+	};
 	8B9E54CD0687B6EB00738FA5 /* CAPlayThrough.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1254, 1470}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{970, 2857}";
+			sepNavIntBoundsRect = "{{0, 0}, {996, 1470}}";
+			sepNavSelRange = "{3728, 0}";
+			sepNavVisRange = "{449, 3352}";
 		};
 	};
 	8B9E54CE0687B6EB00738FA5 /* CAPlayThrough.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1254, 13080}}";
-			sepNavSelRange = "{24013, 0}";
-			sepNavVisRange = "{21983, 2884}";
+			sepNavIntBoundsRect = "{{0, 0}, {996, 13290}}";
+			sepNavSelRange = "{28857, 0}";
+			sepNavVisRange = "{25963, 2928}";
+		};
+	};
+	8B9E54DC0687B72500738FA5 /* AudioDevice.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1736, 1800}}";
+			sepNavSelRange = "{5054, 0}";
+			sepNavVisRange = "{2526, 2731}";
 		};
 	};
 	8D1107260486CEB800E47090 /* CAPlayThrough */ = {
