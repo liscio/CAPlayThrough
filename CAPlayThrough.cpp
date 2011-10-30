@@ -834,7 +834,7 @@ void CAPlayThroughHost::AddDeviceListeners(AudioDeviceID input)
 		AudioStreamID *streams = (AudioStreamID*)malloc(propSize);	
         err = AudioObjectGetPropertyData(input, &aopa, 0, NULL, &propSize, streams);
 		
-		if(!err);
+		if(!err)
 		{
 			UInt32 numStreams = propSize / sizeof(AudioStreamID);
 			for(UInt32 i=0; i < numStreams; i++)
